@@ -34,5 +34,29 @@ exports.DeleteRecipe = (req, res) => {
 }
 
     exports.UpdateRecipe = (req, res) => {
+        {
+            const { recipeName } = req.params;
+            const { name, category,instructions } = req.body;
+            
+           
+            try {
+                const updatedRecipe = await User.findOneAndUpdate(
+                    { recipeName: recipeName },
+                    { name, category,instructions },
+                    { new: true }
+                );
+    
+                if (!updatedRecipe) {
+                    return res.status(404).json({ message: 'Recipe not found' });
+                }
+    
+                res.json(updatedRecipe);
+            } catch (error) {
+                console.error('Failed to update recipe:', error);
+                res.status(500).json({ message: 'Failed to update recipe' });
+            }
+    
+        }
+    
 
     }
